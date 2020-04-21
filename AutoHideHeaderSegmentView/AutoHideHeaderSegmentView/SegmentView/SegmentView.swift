@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol SegmentViewDataSource: class {
+@objc public protocol SegmentViewDataSource: class {
     /// 返回当前index位置pageView
     func segmentView(segmentView: SegmentView, subViewWith index: Int) -> UIView
     
@@ -31,13 +31,13 @@ import UIKit
     @objc optional func segmentBarItemWidth(segmentView: SegmentView) -> CGFloat
 }
 
-@objc protocol SegmentViewDelegate: class {
+@objc public protocol SegmentViewDelegate: class {
     @objc optional func segmentView(segmentView: SegmentView, didEndScroll atIndex: Int)
 }
 
 
 
-class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
+open class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
    
     
 
@@ -87,7 +87,7 @@ class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
         configUI()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -113,19 +113,19 @@ class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
         }
     }
     
-    func numberOfItems(segmentBar: SegmentBar) -> Int {
+    public func numberOfItems(segmentBar: SegmentBar) -> Int {
         return (dataSource?.numberOfPages(segmentView: self))!
     }
     
-    func segmentBarItemTitles(segmentBar: SegmentBar) -> [String] {
+    public func segmentBarItemTitles(segmentBar: SegmentBar) -> [String] {
         return (dataSource?.subTitleWithPages(segmentView: self))!
     }
     
-    func segmentBarAutoContainerView(setmentBar: SegmentBar) -> UIView? {
+    public func segmentBarAutoContainerView(setmentBar: SegmentBar) -> UIView? {
         return dataSource?.segmentBarAutoContainerView?(segmentView: self)
     }
     
-    func segmentBarItemWidth(segmentBar: SegmentBar) -> CGFloat {
+    public func segmentBarItemWidth(segmentBar: SegmentBar) -> CGFloat {
         return (dataSource?.segmentBarItemWidth?(segmentView: self))!
     }
     
@@ -139,7 +139,7 @@ class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
     }
 
     // MARK: 自定义 BarItem DataSource
-    func segmentBar(segmentBar: SegmentBar, barItemFor indexPath: IndexPath) -> UICollectionViewCell {
+    public func segmentBar(segmentBar: SegmentBar, barItemFor indexPath: IndexPath) -> UICollectionViewCell {
         return (dataSource?.segmentView(segmentView: self, barItemFor: indexPath))!
     }
     
@@ -158,11 +158,11 @@ class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
         myScrollView.delegate = self
     }
     
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         myScrollView.setContentOffset(CGPoint(x: CGFloat(indexPath.row) * collectionView.frame.width, y: 0), animated: true)
         segmentBar.selectedIndex = indexPath.row
@@ -171,7 +171,7 @@ class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
         }
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
          
         if scrollView.isEqual(myScrollView) {
             let scrollToScrollStop = !scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
@@ -181,7 +181,7 @@ class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
         }
      }
      
-     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
         if scrollView.isEqual(myScrollView) {
             let  scrollToScrollStop = scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
@@ -204,7 +204,7 @@ class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         if scrollView.isEqual(myScrollView) {
             let contentX = scrollView.contentOffset.x

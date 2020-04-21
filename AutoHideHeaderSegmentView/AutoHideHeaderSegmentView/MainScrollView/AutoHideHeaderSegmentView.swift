@@ -10,7 +10,7 @@
 import UIKit
 
 // MARK: AutoHideHeaderSegmentDelegate
-@objc protocol AutoHideHeaderSegmentDelegate: class {
+@objc public protocol AutoHideHeaderSegmentDelegate: class {
     
     /// 当前 subScrollView index
     @objc optional func mainSegmentView(_ mainSegmentView: AutoHideHeaderSegmentView, didSelectedat index: Int)
@@ -25,7 +25,7 @@ import UIKit
 
 
 // MARK: AutoHideHeaderSegmentDataSource
-@objc protocol  AutoHideHeaderSegmentDataSource: class {
+@objc public protocol  AutoHideHeaderSegmentDataSource: class {
     
     /// 返回当前index位置pageView
     @objc func mainSegmentView(mainSegmentView: AutoHideHeaderSegmentView, subScrollViewFor index: Int) -> UIScrollView
@@ -55,7 +55,7 @@ import UIKit
 
 
 
-class AutoHideHeaderSegmentView: UIView,
+open class AutoHideHeaderSegmentView: UIView,
 UIScrollViewDelegate,
 SegmentViewDataSource,
 SegmentViewDelegate,
@@ -139,7 +139,7 @@ UIGestureRecognizerDelegate {
         initSubViews()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -176,7 +176,7 @@ UIGestureRecognizerDelegate {
 
 
 // MARK: 有关segmentView Delegate && DataSource
-extension AutoHideHeaderSegmentView {
+public extension AutoHideHeaderSegmentView {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.isEqual(mainScrollView) {
@@ -392,7 +392,7 @@ extension AutoHideHeaderSegmentView {
         return offset < 0.0 ? -result : result
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKind(of: UIPanGestureRecognizer.self) {
             let recognizer = gestureRecognizer as! UIPanGestureRecognizer
             let currentY = recognizer.translation(in: self).y

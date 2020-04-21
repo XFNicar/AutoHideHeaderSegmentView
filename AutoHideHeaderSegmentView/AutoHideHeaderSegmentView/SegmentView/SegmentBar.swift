@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol SegmentBarDataSource: class {
+@objc public protocol SegmentBarDataSource: class {
     @objc func segmentBar(segmentBar: SegmentBar, barItemFor indexPath: IndexPath) -> UICollectionViewCell
     /// 返回一共有多少页面
     func numberOfItems(segmentBar: SegmentBar) -> Int
@@ -26,7 +26,7 @@ import UIKit
 
 
 
-class SegmentBar: UIView,UICollectionViewDataSource {
+open class SegmentBar: UIView,UICollectionViewDataSource {
     
     
     weak var dataSource: SegmentBarDataSource?
@@ -104,7 +104,7 @@ class SegmentBar: UIView,UICollectionViewDataSource {
         barCollectionView.showsHorizontalScrollIndicator = false
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -113,15 +113,12 @@ class SegmentBar: UIView,UICollectionViewDataSource {
         itemWidth = iWidth
         lineWidth = iWidth
         lineView.frame = CGRect(x: (itemWidth - lineWidth) / 2, y: lineOrginY, width: lineWidth, height: 2)
-        var itemCount: Int = 0
         if isCustomerBarItem {
-            itemCount = dataSource!.numberOfItems(segmentBar: self)
             layout.itemHeight = frame.height
             layout.itemWidth = itemWidth
         } else {
             items.removeAll()
             items.append(contentsOf: (dataSource?.segmentBarItemTitles?(segmentBar: self))!)
-            itemCount = dataSource!.segmentBarItemTitles!(segmentBar: self).count
             layout.itemHeight = frame.height
             layout.itemWidth = itemWidth
         }
@@ -141,15 +138,15 @@ class SegmentBar: UIView,UICollectionViewDataSource {
         barCollectionView.reloadData()
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (dataSource?.numberOfItems(segmentBar: self))!
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // 自定义bar
         if isCustomerBarItem {
