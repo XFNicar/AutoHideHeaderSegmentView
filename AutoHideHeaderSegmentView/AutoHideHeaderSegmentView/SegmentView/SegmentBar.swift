@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ObjectiveC
 
 @objc public protocol SegmentBarDataSource: class {
     @objc func segmentBar(segmentBar: SegmentBar, barItemFor indexPath: IndexPath) -> UICollectionViewCell
@@ -26,7 +27,7 @@ import UIKit
 
 
 
-open class SegmentBar: UIView,UICollectionViewDataSource {
+@objcMembers open class SegmentBar: UIView,UICollectionViewDataSource {
     
     
     weak var dataSource: SegmentBarDataSource?
@@ -163,7 +164,7 @@ open class SegmentBar: UIView,UICollectionViewDataSource {
         return cell
     }
     
-    func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
+   @objc func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
         return barCollectionView.dequeueReusableCell(withReuseIdentifier: withReuseIdentifier, for: forIndexPath)
     }
     

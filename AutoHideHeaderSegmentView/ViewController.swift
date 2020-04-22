@@ -25,7 +25,7 @@ class ViewController: UIViewController,AutoHideHeaderSegmentDataSource,AutoHideH
         mainScroll?.dataSource = self
         mainScroll?.delegate = self
         mainScroll?.maxTopScrollHeight = 120
-        mainScroll?.registBarItem(UINib.init(nibName: "CustomerBarItemCVCell", bundle: .main), forCellWithReuseIdentifier: "customerId")
+        mainScroll?.registBarItemNib(UINib.init(nibName: "CustomerBarItemCVCell", bundle: .main), forCellWithReuseIdentifier: "customerId")
         mainScroll!.reloadData()
     }
     func mainSegmentView(mainSegmentView: AutoHideHeaderSegmentView, subScrollViewFor index: Int) -> UIScrollView {

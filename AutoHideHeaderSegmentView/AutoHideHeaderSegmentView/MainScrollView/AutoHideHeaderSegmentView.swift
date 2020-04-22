@@ -8,6 +8,8 @@
 
 
 import UIKit
+import ObjectiveC
+
 
 // MARK: AutoHideHeaderSegmentDelegate
 @objc public protocol AutoHideHeaderSegmentDelegate: class {
@@ -53,9 +55,9 @@ import UIKit
 }
 
 
+@objcMembers
 
-
-open class AutoHideHeaderSegmentView: UIView,
+open  class AutoHideHeaderSegmentView: UIView,
 UIScrollViewDelegate,
 SegmentViewDataSource,
 SegmentViewDelegate,
@@ -66,24 +68,23 @@ UIGestureRecognizerDelegate {
     }
     
     // MARK: 代理
-    @objc weak var delegate: AutoHideHeaderSegmentDelegate?
+    @objc public weak var delegate: AutoHideHeaderSegmentDelegate?
     
     
     // MARK: 数据源
-    @objc weak var dataSource: AutoHideHeaderSegmentDataSource?
-    
+    @objc public weak var dataSource: AutoHideHeaderSegmentDataSource?
     
     // MARK: 头部最大滚动高度
-    var maxTopScrollHeight: CGFloat?
+    public var maxTopScrollHeight: CGFloat?
     
     
     // MARK: 设置 HeadView
-    @objc var autoHeaderView: UIView {
+    @objc public var autoHeaderView: UIView {
         set {
             headView.removeFromSuperview()
             headView = newValue
             headView.frame = CGRect(x: 0, y: 0, width: frame.width, height: newValue.frame.height * (frame.width / newValue.frame.width))
-            addSubview(headView)
+            mainScrollView.addSubview(headView)
             mainScrollView.contentSize = CGSize(width: 0, height: frame.height + topHeight)
         }
         get {
@@ -93,7 +94,7 @@ UIGestureRecognizerDelegate {
     
     // MARK: 是否自定义segmentBarItem
     /// 如需自定义baritem 务必设置 isCustomerBarItem = true 否则不会走 自定义cell dataSource
-    @objc var isCustomerBarItem: Bool {
+    @objc public var isCustomerBarItem: Bool {
         get { return segmentView.isCustomerBarItem }
         set { segmentView.isCustomerBarItem = newValue }
     }
@@ -134,7 +135,7 @@ UIGestureRecognizerDelegate {
         }
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         initSubViews()
     }
@@ -146,7 +147,7 @@ UIGestureRecognizerDelegate {
     private func initSubViews() {
         addSubview(mainScrollView)
         headView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 150)
-        headView.backgroundColor = .RandomColor()
+//        headView.backgroundColor = .RandomColor()
         mainScrollView.addSubview(headView)
         mainScrollView.contentSize = CGSize(width: 0, height: frame.height + topHeight)
         mainScrollView.addSubview(segmentView)
@@ -156,7 +157,7 @@ UIGestureRecognizerDelegate {
         animator = UIDynamicAnimator.init(referenceView: self)
     }
     
-    func reloadData() {
+   @objc public func reloadData() {
         
         reConfigureSubViews()
         if dataSource != nil {
@@ -176,9 +177,9 @@ UIGestureRecognizerDelegate {
 
 
 // MARK: 有关segmentView Delegate && DataSource
-public extension AutoHideHeaderSegmentView {
+@objc public extension AutoHideHeaderSegmentView {
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+   @objc func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.isEqual(mainScrollView) {
             if self.delegate?.mainScrollViewDidScroll?(scrollView) != nil { }
         } else {
@@ -186,7 +187,7 @@ public extension AutoHideHeaderSegmentView {
         }
     }
     
-    func segmentView(segmentView: SegmentView, subViewWith index: Int) -> UIView {
+   @objc func segmentView(segmentView: SegmentView, subViewWith index: Int) -> UIView {
         
         var subView = UIScrollView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         if dataSource != nil {
@@ -200,44 +201,44 @@ public extension AutoHideHeaderSegmentView {
         return subView
     }
     
-    func subTitleWithPages(segmentView: SegmentView) -> [String] {
+   @objc func subTitleWithPages(segmentView: SegmentView) -> [String] {
         if dataSource != nil {
             return dataSource!.subTitleForPages!(mainSegmentView: self)
         }
         return []
     }
     
-    func numberOfPages(segmentView: SegmentView) -> Int {
+    @objc func numberOfPages(segmentView: SegmentView) -> Int {
         return (dataSource?.numberOfPages!(mainSegmentView: self))!
     }
     
-    func segmentView(segmentView: SegmentView, barItemFor indexPath: IndexPath) -> UICollectionViewCell {
+    @objc func segmentView(segmentView: SegmentView, barItemFor indexPath: IndexPath) -> UICollectionViewCell {
         return (dataSource?.mainSegmentView!(mainSegmentView: self, barItemFor: indexPath))!
     }
     
     /// 返回barItem 移动背景
-    func segmentBarAutoContainerView(segmentView: SegmentView ) -> UIView? {
+    @objc func segmentBarAutoContainerView(segmentView: SegmentView ) -> UIView? {
         return dataSource?.segmentBarAutoContainerView?(mainSegmentView: self)
     }
     
-    func segmentBarItemWidth(segmentView: SegmentView) -> CGFloat {
+    @objc func segmentBarItemWidth(segmentView: SegmentView) -> CGFloat {
         return (dataSource?.segmentBarItemWidth?(mainSegmentView: self))!
     }
     
     // MARK: 注册 BarItemCell
-    func registBarItem(_ cellClass: AnyClass?, forCellWithReuseIdentifier: String ) {
-        segmentView.registBarItem(cellClass, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
+    @objc func registBarItemClass(_ cellClass: AnyClass?, forCellWithReuseIdentifier: String ) {
+        segmentView.registBarItemClass(cellClass, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
     }
     
-    func registBarItem(_ nib: UINib?, forCellWithReuseIdentifier: String) {
-        segmentView.registBarItem(nib, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
+    @objc func registBarItemNib(_ nib: UINib?, forCellWithReuseIdentifier: String) {
+        segmentView.registBarItemNib(nib, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
     }
     
-    func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
+   @objc func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
         return segmentView.dequeueReusableCell(withReuseIdentifier: withReuseIdentifier, forIndexPath: forIndexPath)
     }
     
-    func segmentView(segmentView: SegmentView, didEndScroll atIndex: Int) {
+   @objc func segmentView(segmentView: SegmentView, didEndScroll atIndex: Int) {
         currentSubScrollView = subScrollViews[atIndex]
         if delegate?.mainSegmentView?(self, didSelectedat: atIndex) != nil {
         }

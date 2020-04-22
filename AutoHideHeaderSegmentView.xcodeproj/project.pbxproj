@@ -30,6 +30,7 @@
 		A08F0011244D3B8000E1CC66 /* AutoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08F0010244D3B8000E1CC66 /* AutoContainerView.swift */; };
 		A08F0013244D3BE000E1CC66 /* AutoContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08F0012244D3BE000E1CC66 /* AutoContainerView.xib */; };
 		A0CBC829244F63EE009D2A44 /* AutoHideHeaderSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CBC828244F63EE009D2A44 /* AutoHideHeaderSegmentView.swift */; };
+		A0CBC831244FEACF009D2A44 /* ExtensionUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CBC830244FEACF009D2A44 /* ExtensionUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		A08F0010244D3B8000E1CC66 /* AutoContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoContainerView.swift; sourceTree = "<group>"; };
 		A08F0012244D3BE000E1CC66 /* AutoContainerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoContainerView.xib; sourceTree = "<group>"; };
 		A0CBC828244F63EE009D2A44 /* AutoHideHeaderSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoHideHeaderSegmentView.swift; sourceTree = "<group>"; };
+		A0CBC830244FEACF009D2A44 /* ExtensionUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 				A08F0010244D3B8000E1CC66 /* AutoContainerView.swift */,
 				A08F0012244D3BE000E1CC66 /* AutoContainerView.xib */,
 				A08F000E244D3A8E00E1CC66 /* ExtensionUIView.swift */,
+				A0CBC830244FEACF009D2A44 /* ExtensionUIView.swift */,
 				A07140AC244E950A00481E21 /* HeaderView.swift */,
 				A07140AE244E951D00481E21 /* HeaderView.xib */,
 				A0617BF02449879E007A039B /* CustomerBarItemCVCell.swift */,
@@ -353,6 +356,7 @@
 				A001BBD82446EE9B005083D6 /* SegmentBarItem.swift in Sources */,
 				A001BBE22446F143005083D6 /* MainSegmentView.swift in Sources */,
 				A001BBD62446EE9B005083D6 /* SegmentBarCVLayout.swift in Sources */,
+				A0CBC831244FEACF009D2A44 /* ExtensionUIView.swift in Sources */,
 				A001BBA12446EB69005083D6 /* AppDelegate.swift in Sources */,
 				A08F000F244D3A8E00E1CC66 /* ExtensionUIView.swift in Sources */,
 				A0617BF22449879E007A039B /* CustomerBarItemCVCell.swift in Sources */,

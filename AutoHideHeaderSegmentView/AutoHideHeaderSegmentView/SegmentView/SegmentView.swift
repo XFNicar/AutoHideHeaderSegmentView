@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import ObjectiveC
 
 @objc public protocol SegmentViewDataSource: class {
     /// 返回当前index位置pageView
-    func segmentView(segmentView: SegmentView, subViewWith index: Int) -> UIView
+    @objc func segmentView(segmentView: SegmentView, subViewWith index: Int) -> UIView
     
     /// 返回segmentBar的全部标题
-    func subTitleWithPages(segmentView: SegmentView) -> [String]
+    @objc func subTitleWithPages(segmentView: SegmentView) -> [String]
     
     /// 返回一共有多少页面
     @objc func numberOfPages(segmentView: SegmentView) -> Int
@@ -37,7 +38,7 @@ import UIKit
 
 
 
-open class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
+@objcMembers open class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
    
     
 
@@ -92,7 +93,7 @@ open class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
     }
     
     // MARK: 刷新数据
-    func reloadData() {
+   @objc func reloadData() {
         var pageCount: Int = 0
         if isCustomerBarItem {
             pageCount = (dataSource?.numberOfPages(segmentView: self))!
@@ -130,20 +131,20 @@ open class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
     }
     
     // MARK: 注册 BarItemCell
-    func registBarItem(_ cellClass: AnyClass?, forCellWithReuseIdentifier: String ) {
+   @objc public func registBarItemClass(_ cellClass: AnyClass?, forCellWithReuseIdentifier: String ) {
         segmentBar.barCollectionView.register(cellClass, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
     }
     
-    func registBarItem(_ nib: UINib?, forCellWithReuseIdentifier: String) {
+   @objc public func registBarItemNib(_ nib: UINib?, forCellWithReuseIdentifier: String) {
         segmentBar.barCollectionView.register(nib, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
     }
 
     // MARK: 自定义 BarItem DataSource
-    public func segmentBar(segmentBar: SegmentBar, barItemFor indexPath: IndexPath) -> UICollectionViewCell {
+   @objc public func segmentBar(segmentBar: SegmentBar, barItemFor indexPath: IndexPath) -> UICollectionViewCell {
         return (dataSource?.segmentView(segmentView: self, barItemFor: indexPath))!
     }
     
-    func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
+  @objc  func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
         return segmentBar.dequeueReusableCell(withReuseIdentifier: withReuseIdentifier, forIndexPath: forIndexPath)
     }
     

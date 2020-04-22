@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import ObjectiveC
 class SegmentBarCVLayout: UICollectionViewLayout {
     private var attriArray:[UICollectionViewLayoutAttributes] = []
     var frameY:CGFloat = 0
