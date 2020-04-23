@@ -30,37 +30,37 @@ import ObjectiveC
 @objcMembers open class SegmentBar: UIView,UICollectionViewDataSource {
     
     
-    weak var dataSource: SegmentBarDataSource?
-    var isCustomerBarItem: Bool = false
-    weak var contentScrollView: UIScrollView?
-    var barCollectionView: UICollectionView!
+    @objc public weak var dataSource: SegmentBarDataSource?
+    @objc public var isCustomerBarItem: Bool = false
+    @objc public weak var contentScrollView: UIScrollView?
+    @objc public var barCollectionView: UICollectionView!
     
     private var items: [String] = []
-    var barHeight: CGFloat = 45
-    var layout: SegmentBarCVLayout!
-    var lineView: UIView = UIView()
-    var autoContainer: UIView?
+    @objc public var barHeight: CGFloat = 45
+    @objc public var layout: SegmentBarCVLayout?
+    @objc public var lineView: UIView = UIView()
+    @objc public var autoContainer: UIView?
     
-    var currentIndex: Int = 0
-    var lineWidth: CGFloat {
+    @objc public var currentIndex: Int = 0
+    @objc public var lineWidth: CGFloat {
         set {
-             lineView.frame = CGRect(x: (newValue - newValue) / 2, y: lineOrginY, width: newValue, height: 2)
+            lineView.frame = CGRect(x: (newValue - newValue) / 2, y: lineOrginY, width: newValue, height: 2)
         }
         get {
             return lineView.frame.width
         }
     }
-    var lineOrginY: CGFloat {
+    @objc public var lineOrginY: CGFloat {
         get {
             return frame.height - 2
         }
     }
-    var subTitleFont: UIFont = UIFont.systemFont(ofSize: 14)
-    var selectedTitleColor: UIColor = .HexRGBColor(0x0D5EDA)
-    var deSelectedTitleColor: UIColor = .HexRGBColor(0x646D76)
+    @objc public var subTitleFont: UIFont = UIFont.systemFont(ofSize: 14)
+    @objc public var selectedTitleColor: UIColor = .HexRGBColor(0x0D5EDA)
+    @objc public var deSelectedTitleColor: UIColor = .HexRGBColor(0x646D76)
     private var cellIdentifer: String = "defaultId"
     
-    var titleFont : UIFont {
+    @objc public var titleFont : UIFont {
         set {
             subTitleFont = newValue
             barCollectionView.reloadData()
@@ -68,16 +68,16 @@ import ObjectiveC
         get { return subTitleFont }
     }
     
-    var selectedIndex: Int {
+    @objc public var selectedIndex: Int {
         set {
             currentIndex = newValue
             barCollectionView.reloadData()
         }
         get { return currentIndex }
     }
-    var itemWidth: CGFloat = 0
+    @objc public var itemWidth: CGFloat = 0
     
-    var barItems: [String] {
+    @objc public var barItems: [String] {
         get { return items }
         set {
             items = newValue
@@ -86,15 +86,15 @@ import ObjectiveC
         }
     }
     
-    var contentWidth: CGFloat {
+    @objc public var contentWidth: CGFloat {
         get { return itemWidth * CGFloat(items.count) }
     }
     
-    override init(frame: CGRect) {
+    @objc public override init(frame: CGRect) {
         super.init(frame: frame)
         barHeight = frame.height
         layout = SegmentBarCVLayout(65, frame.height - 2)
-        barCollectionView = UICollectionView.init(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), collectionViewLayout: layout)
+        barCollectionView = UICollectionView.init(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), collectionViewLayout: layout!)
         barCollectionView.register(SegmentBarItem.self, forCellWithReuseIdentifier: cellIdentifer)
         barCollectionView.dataSource = self
         addSubview(barCollectionView)
@@ -109,19 +109,19 @@ import ObjectiveC
         fatalError("init(coder:) has not been implemented")
     }
     
-    func reloadData() {
+    @objc public  func reloadData() {
         let iWidth: CGFloat = (dataSource?.segmentBarItemWidth?(segmentBar: self))!
         itemWidth = iWidth
         lineWidth = iWidth
         lineView.frame = CGRect(x: (itemWidth - lineWidth) / 2, y: lineOrginY, width: lineWidth, height: 2)
         if isCustomerBarItem {
-            layout.itemHeight = frame.height
-            layout.itemWidth = itemWidth
+            layout!.itemHeight = frame.height
+            layout!.itemWidth = itemWidth
         } else {
             items.removeAll()
             items.append(contentsOf: (dataSource?.segmentBarItemTitles?(segmentBar: self))!)
-            layout.itemHeight = frame.height
-            layout.itemWidth = itemWidth
+            layout!.itemHeight = frame.height
+            layout!.itemWidth = itemWidth
         }
         
         if let autoView = dataSource?.segmentBarAutoContainerView?(setmentBar: self) {
@@ -139,15 +139,15 @@ import ObjectiveC
         barCollectionView.reloadData()
     }
     
-    public func numberOfSections(in collectionView: UICollectionView) -> Int {
+    @objc public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    @objc public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (dataSource?.numberOfItems(segmentBar: self))!
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    @objc public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // 自定义bar
         if isCustomerBarItem {
@@ -164,9 +164,9 @@ import ObjectiveC
         return cell
     }
     
-   @objc func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
+    @objc public func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
         return barCollectionView.dequeueReusableCell(withReuseIdentifier: withReuseIdentifier, for: forIndexPath)
     }
     
-
+    
 }

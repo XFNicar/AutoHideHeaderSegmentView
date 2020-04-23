@@ -9,9 +9,9 @@
 import UIKit
 import ObjectiveC
 
-class SegmentBarItem: UICollectionViewCell {
-
-    var titleLabel: UILabel!
+@objcMembers open class SegmentBarItem: UICollectionViewCell {
+    
+    @objc public var titleLabel: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,11 +22,11 @@ class SegmentBarItem: UICollectionViewCell {
         addSubview(titleLabel)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateUI(_ title: String, titleColor: UIColor, font: UIFont) {
+    @objc public func updateUI(_ title: String, titleColor: UIColor, font: UIFont) {
         titleLabel.text = title
         titleLabel.textColor = titleColor
         titleLabel.font = font

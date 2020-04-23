@@ -22,7 +22,7 @@ import ObjectiveC
     
     /// sub ScrollView  滚动时调用
     @objc optional func subScrollViewDidScroll(_ subScrollView: UIScrollView)
-     
+    
 }
 
 
@@ -43,9 +43,9 @@ import ObjectiveC
     /// 返回页数
     /// 使用自定义 barItem 时必须实现
     @objc optional func numberOfPages(mainSegmentView: AutoHideHeaderSegmentView) -> Int
-
-//    /// 返回 barItem width
-//    @objc optional func mainSegmentView(mainSegmentView: MainSegmentView, barWidthForIndex: Int) -> CGFloat
+    
+    //    /// 返回 barItem width
+    //    @objc optional func mainSegmentView(mainSegmentView: MainSegmentView, barWidthForIndex: Int) -> CGFloat
     
     /// 返回barItem 移动背景
     @objc optional func segmentBarAutoContainerView(mainSegmentView: AutoHideHeaderSegmentView ) -> UIView?
@@ -58,9 +58,9 @@ import ObjectiveC
 @objcMembers
 
 open  class AutoHideHeaderSegmentView: UIView,
-UIScrollViewDelegate,
-SegmentViewDataSource,
-SegmentViewDelegate,
+    UIScrollViewDelegate,
+    SegmentViewDataSource,
+    SegmentViewDelegate,
 UIGestureRecognizerDelegate {
     
     deinit {
@@ -100,7 +100,7 @@ UIGestureRecognizerDelegate {
     }
     
     
-    private lazy var segmentView: SegmentView = {
+    @objc public lazy var segmentView: SegmentView = {
         let sView = SegmentView.init(frame: CGRect(x: 0, y: topHeight, width: frame.width, height: frame.height))
         sView.dataSource = self
         sView.delegate = self
@@ -135,7 +135,7 @@ UIGestureRecognizerDelegate {
         }
     }
     
-    public override init(frame: CGRect) {
+    @objc public override init(frame: CGRect) {
         super.init(frame: frame)
         initSubViews()
     }
@@ -147,7 +147,7 @@ UIGestureRecognizerDelegate {
     private func initSubViews() {
         addSubview(mainScrollView)
         headView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 150)
-//        headView.backgroundColor = .RandomColor()
+        //        headView.backgroundColor = .RandomColor()
         mainScrollView.addSubview(headView)
         mainScrollView.contentSize = CGSize(width: 0, height: frame.height + topHeight)
         mainScrollView.addSubview(segmentView)
@@ -157,7 +157,7 @@ UIGestureRecognizerDelegate {
         animator = UIDynamicAnimator.init(referenceView: self)
     }
     
-   @objc public func reloadData() {
+    @objc public func reloadData() {
         
         reConfigureSubViews()
         if dataSource != nil {
@@ -172,14 +172,14 @@ UIGestureRecognizerDelegate {
             segmentView.frame = CGRect(x: 0, y: headView.frame.height, width: frame.width, height: frame.height -  (headView.frame.height - maxTopScrollHeight!))
         }
     }
-
+    
 }
 
 
 // MARK: 有关segmentView Delegate && DataSource
 @objc public extension AutoHideHeaderSegmentView {
     
-   @objc func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    @objc func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.isEqual(mainScrollView) {
             if self.delegate?.mainScrollViewDidScroll?(scrollView) != nil { }
         } else {
@@ -187,7 +187,7 @@ UIGestureRecognizerDelegate {
         }
     }
     
-   @objc func segmentView(segmentView: SegmentView, subViewWith index: Int) -> UIView {
+    @objc func segmentView(segmentView: SegmentView, subViewWith index: Int) -> UIView {
         
         var subView = UIScrollView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         if dataSource != nil {
@@ -201,7 +201,7 @@ UIGestureRecognizerDelegate {
         return subView
     }
     
-   @objc func subTitleWithPages(segmentView: SegmentView) -> [String] {
+    @objc func subTitleWithPages(segmentView: SegmentView) -> [String] {
         if dataSource != nil {
             return dataSource!.subTitleForPages!(mainSegmentView: self)
         }
@@ -234,22 +234,22 @@ UIGestureRecognizerDelegate {
         segmentView.registBarItemNib(nib, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
     }
     
-   @objc func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
+    @objc func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
         return segmentView.dequeueReusableCell(withReuseIdentifier: withReuseIdentifier, forIndexPath: forIndexPath)
     }
     
-   @objc func segmentView(segmentView: SegmentView, didEndScroll atIndex: Int) {
+    @objc func segmentView(segmentView: SegmentView, didEndScroll atIndex: Int) {
         currentSubScrollView = subScrollViews[atIndex]
         if delegate?.mainSegmentView?(self, didSelectedat: atIndex) != nil {
         }
-
+        
     }
 }
 
 
 // MARK: 处理手势冲突问题
 extension AutoHideHeaderSegmentView {
-    @objc func panGestureRecognizerAction(recognizer: UIPanGestureRecognizer)  {
+    @objc public func panGestureRecognizerAction(recognizer: UIPanGestureRecognizer)  {
         switch recognizer.state {
         case .began:
             let currentY = recognizer.translation(in: self).y
@@ -299,7 +299,7 @@ extension AutoHideHeaderSegmentView {
         recognizer.setTranslation(CGPoint.zero, in: self)
     }
     
-    func controlScroll(_ forVertical: CGFloat, state: UIGestureRecognizer.State) {
+    @objc public func controlScroll(_ forVertical: CGFloat, state: UIGestureRecognizer.State) {
         if self.mainScrollView.contentOffset.y >= topHeight {
             var offsetY = (currentSubScrollView?.contentOffset.y)! - forVertical
             if offsetY < 0 {
@@ -367,7 +367,7 @@ extension AutoHideHeaderSegmentView {
         }
     }
     
-    func outSideFrame() -> Bool {
+    @objc public func outSideFrame() -> Bool {
         if  mainScrollView.contentOffset.y < 0 {
             return true
         }
@@ -385,7 +385,7 @@ extension AutoHideHeaderSegmentView {
         }
     }
     
-    func rubberBandDistance(_ offset: CGFloat, dimension: CGFloat) -> CGFloat {
+    @objc public func rubberBandDistance(_ offset: CGFloat, dimension: CGFloat) -> CGFloat {
         let constant: CGFloat = 0.55
         let resultA = constant * abs(offset) * dimension
         let resultB = dimension + constant * abs(offset)
@@ -393,7 +393,7 @@ extension AutoHideHeaderSegmentView {
         return offset < 0.0 ? -result : result
     }
     
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    @objc public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKind(of: UIPanGestureRecognizer.self) {
             let recognizer = gestureRecognizer as! UIPanGestureRecognizer
             let currentY = recognizer.translation(in: self).y
@@ -411,10 +411,10 @@ extension AutoHideHeaderSegmentView {
         return false
     }
     
-    class DynamicItem: NSObject, UIDynamicItem {
+    @objc public class DynamicItem: NSObject, UIDynamicItem {
         
         private var pCenter: CGPoint = .zero
-        var center: CGPoint {
+        @objc public var center: CGPoint {
             get {
                 return pCenter
             }
@@ -424,7 +424,7 @@ extension AutoHideHeaderSegmentView {
         }
         
         private var pTransform: CGAffineTransform = CGAffineTransform.init()
-        var transform: CGAffineTransform {
+        @objc public var transform: CGAffineTransform {
             get {
                 return pTransform
             }
@@ -435,7 +435,7 @@ extension AutoHideHeaderSegmentView {
         }
         
         private var pBounds: CGRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        var bounds: CGRect {
+        @objc public var bounds: CGRect {
             get {
                 return pBounds
             }

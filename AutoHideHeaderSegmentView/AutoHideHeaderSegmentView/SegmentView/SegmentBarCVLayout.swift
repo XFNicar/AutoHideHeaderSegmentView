@@ -8,14 +8,14 @@
 
 import UIKit
 import ObjectiveC
-class SegmentBarCVLayout: UICollectionViewLayout {
+@objcMembers open class SegmentBarCVLayout: UICollectionViewLayout {
     private var attriArray:[UICollectionViewLayoutAttributes] = []
-    var frameY:CGFloat = 0
-    var frameX:CGFloat = 0
-    var contentHeight: CGFloat = 0
-    var contentWidth: CGFloat = 0
-    var itemHeight: CGFloat = 0
-    var itemWidth: CGFloat = 0
+    @objc public var frameY:CGFloat = 0
+    @objc public var frameX:CGFloat = 0
+    @objc public var contentHeight: CGFloat = 0
+    @objc public var contentWidth: CGFloat = 0
+    @objc public var itemHeight: CGFloat = 0
+    @objc public var itemWidth: CGFloat = 0
     
     init(_ itemWidth: CGFloat, _ itemHeight: CGFloat) {
         super.init()
@@ -24,15 +24,15 @@ class SegmentBarCVLayout: UICollectionViewLayout {
         self.contentHeight = itemHeight
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepare() {
+    open override func prepare() {
         attriArray.removeAll()
         contentHeight = 0
         contentWidth = 0
-
+        
         let allSection = self.collectionView?.dataSource?.numberOfSections?(in: self.collectionView!)
         for section in 0...(allSection!-1) {
             let allRow = self.collectionView?.dataSource?.collectionView(self.collectionView!, numberOfItemsInSection: section)
@@ -46,7 +46,7 @@ class SegmentBarCVLayout: UICollectionViewLayout {
         }
     }
     
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+    open override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         
         let attri = UICollectionViewLayoutAttributes.init(forCellWith: indexPath)
         attri.frame = CGRect(x: itemWidth * CGFloat(indexPath.row),
@@ -57,12 +57,12 @@ class SegmentBarCVLayout: UICollectionViewLayout {
         return attri
     }
     
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         return attriArray
     }
     
     
-    override var collectionViewContentSize: CGSize {
+    open override var collectionViewContentSize: CGSize {
         get {
             return CGSize(width: contentWidth, height:contentHeight)
         }

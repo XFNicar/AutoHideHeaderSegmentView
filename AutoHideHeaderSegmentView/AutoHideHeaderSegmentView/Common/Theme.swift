@@ -9,7 +9,7 @@
 import UIKit
 
 
-extension UIColor {
+public extension UIColor {
     
     /// 0~255 区间的 RGB 值转 UIColor
     convenience init(red: Int, green: Int, blue: Int, alpha: CGFloat) {

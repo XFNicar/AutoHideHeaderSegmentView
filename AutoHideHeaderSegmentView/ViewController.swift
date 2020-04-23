@@ -70,8 +70,6 @@ class ViewController: UIViewController,AutoHideHeaderSegmentDataSource,AutoHideH
         return cell
     }
     
-    
-    
     // 子页面滚动
     func subScrollViewDidScroll(_ subScrollView: UIScrollView) {
         

@@ -39,42 +39,42 @@ import ObjectiveC
 
 
 @objcMembers open class SegmentView: UIView,UICollectionViewDelegate,SegmentBarDataSource {
-   
     
-
-    weak var dataSource: SegmentViewDataSource?
-    weak var delegate: SegmentViewDelegate?
-        
-//
-//    var barLineWidth: CGFloat {
-//        set { segmentBar.lineWidth = newValue }
-//        get { return segmentBar.lineWidth }
-//    }
     
-    var barBackGroundColor: UIColor? {
+    
+    @objc public   weak var dataSource: SegmentViewDataSource?
+    @objc public  weak var delegate: SegmentViewDelegate?
+    
+    //
+    //    var barLineWidth: CGFloat {
+    //        set { segmentBar.lineWidth = newValue }
+    //        get { return segmentBar.lineWidth }
+    //    }
+    
+    @objc public  var barBackGroundColor: UIColor? {
         set { segmentBar.backgroundColor = newValue }
         get { return segmentBar.backgroundColor }
     }
     
-    var barTitleFont: UIFont {
+    @objc public  var barTitleFont: UIFont {
         set { segmentBar.titleFont = newValue }
         get { return segmentBar.titleFont }
     }
     
     // MARK: 是否自定义segmentBarItem
-    var isCustomerBarItem: Bool {
+    @objc public   var isCustomerBarItem: Bool {
         get { return segmentBar.isCustomerBarItem }
         set { segmentBar.isCustomerBarItem = newValue }
     }
     
-    var scrollBounces: Bool {
+    @objc public  var scrollBounces: Bool {
         set { myScrollView.bounces = newValue }
         get { return myScrollView.bounces }
     }
     
     private var myScrollView: CustomerScrollView!
     
-    private lazy var segmentBar: SegmentBar = {
+    @objc public  lazy var segmentBar: SegmentBar = {
         let sbar = SegmentBar.init(frame: CGRect(x: 0, y: 0, width:frame.width, height: 50))
         sbar.barCollectionView?.delegate = self
         sbar.dataSource = self
@@ -82,7 +82,7 @@ import ObjectiveC
     }()
     
     private var subPageViews: [UIView] = []
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configUI()
@@ -93,7 +93,7 @@ import ObjectiveC
     }
     
     // MARK: 刷新数据
-   @objc func reloadData() {
+    @objc public  func reloadData() {
         var pageCount: Int = 0
         if isCustomerBarItem {
             pageCount = (dataSource?.numberOfPages(segmentView: self))!
@@ -114,37 +114,37 @@ import ObjectiveC
         }
     }
     
-    public func numberOfItems(segmentBar: SegmentBar) -> Int {
+    @objc public  func numberOfItems(segmentBar: SegmentBar) -> Int {
         return (dataSource?.numberOfPages(segmentView: self))!
     }
     
-    public func segmentBarItemTitles(segmentBar: SegmentBar) -> [String] {
+    @objc public  func segmentBarItemTitles(segmentBar: SegmentBar) -> [String] {
         return (dataSource?.subTitleWithPages(segmentView: self))!
     }
     
-    public func segmentBarAutoContainerView(setmentBar: SegmentBar) -> UIView? {
+    @objc public  func segmentBarAutoContainerView(setmentBar: SegmentBar) -> UIView? {
         return dataSource?.segmentBarAutoContainerView?(segmentView: self)
     }
     
-    public func segmentBarItemWidth(segmentBar: SegmentBar) -> CGFloat {
+    @objc public  func segmentBarItemWidth(segmentBar: SegmentBar) -> CGFloat {
         return (dataSource?.segmentBarItemWidth?(segmentView: self))!
     }
     
     // MARK: 注册 BarItemCell
-   @objc public func registBarItemClass(_ cellClass: AnyClass?, forCellWithReuseIdentifier: String ) {
+    @objc public func registBarItemClass(_ cellClass: AnyClass?, forCellWithReuseIdentifier: String ) {
         segmentBar.barCollectionView.register(cellClass, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
     }
     
-   @objc public func registBarItemNib(_ nib: UINib?, forCellWithReuseIdentifier: String) {
+    @objc public func registBarItemNib(_ nib: UINib?, forCellWithReuseIdentifier: String) {
         segmentBar.barCollectionView.register(nib, forCellWithReuseIdentifier: forCellWithReuseIdentifier)
     }
-
+    
     // MARK: 自定义 BarItem DataSource
-   @objc public func segmentBar(segmentBar: SegmentBar, barItemFor indexPath: IndexPath) -> UICollectionViewCell {
+    @objc public func segmentBar(segmentBar: SegmentBar, barItemFor indexPath: IndexPath) -> UICollectionViewCell {
         return (dataSource?.segmentView(segmentView: self, barItemFor: indexPath))!
     }
     
-  @objc  func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
+    @objc public   func dequeueReusableCell(withReuseIdentifier: String, forIndexPath: IndexPath) -> UICollectionViewCell? {
         return segmentBar.dequeueReusableCell(withReuseIdentifier: withReuseIdentifier, forIndexPath: forIndexPath)
     }
     
@@ -159,11 +159,11 @@ import ObjectiveC
         myScrollView.delegate = self
     }
     
-    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    @objc public  func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    @objc public  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         myScrollView.setContentOffset(CGPoint(x: CGFloat(indexPath.row) * collectionView.frame.width, y: 0), animated: true)
         segmentBar.selectedIndex = indexPath.row
@@ -172,17 +172,17 @@ import ObjectiveC
         }
     }
     
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-         
+    @objc public  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
         if scrollView.isEqual(myScrollView) {
             let scrollToScrollStop = !scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
             if scrollToScrollStop {
                 scrollViewDidEndenScroll(scrollView)
             }
         }
-     }
-     
-    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    }
+    
+    @objc public  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
         if scrollView.isEqual(myScrollView) {
             let  scrollToScrollStop = scrollView.isTracking && !scrollView.isDragging && !scrollView.isDecelerating
@@ -190,10 +190,10 @@ import ObjectiveC
                 scrollViewDidEndenScroll(scrollView)
             }
         }
-         
-     }
+        
+    }
     
-    func scrollViewDidEndenScroll(_ scrollView: UIScrollView)  {
+    @objc public  func scrollViewDidEndenScroll(_ scrollView: UIScrollView)  {
         
         if scrollView.isEqual(myScrollView) {
             let contentX = scrollView.contentOffset.x
@@ -205,7 +205,7 @@ import ObjectiveC
         }
     }
     
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    @objc public  func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         if scrollView.isEqual(myScrollView) {
             let contentX = scrollView.contentOffset.x
@@ -229,5 +229,5 @@ import ObjectiveC
             }
         }
     }
-
+    
 }
